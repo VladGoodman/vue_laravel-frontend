@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <div class="form-title">
-      authorization
+      registration
     </div>
     <div class="form-body">
       <form v-on:submit.prevent="login">
@@ -35,8 +35,10 @@ export default {
   data () {
     return {
       form: {
+        username: '',
         email: '',
-        password: ''
+        password: '',
+        repeat_password: '',
       },
       errors: {}
     }
@@ -60,66 +62,66 @@ export default {
         email: this.form.email,
         password: this.form.password
       })
-      .then(response => {
-        this.$router.push('/')
-      })
-      .catch(error => {
-        this.errors = error.error
-      })
+        .then(response => {
+          this.$router.push('/')
+        })
+        .catch(error => {
+          this.errors = error.error
+        })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .form {
-    color: white;
-    background-color: #40467C;
-    border-radius: 40px;
-    padding: 64px 44px;
-    width: 520px;
+.form {
+  color: white;
+  background-color: #40467C;
+  border-radius: 40px;
+  padding: 64px 44px;
+  width: 520px;
 
-    &-title {
-      text-transform: uppercase;
-      text-align: center;
-      font-size: 36px;
-      margin-bottom: 45px;
-    }
-    &-body {
-      &__input {
-        margin: 15px 0;
+  &-title {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 45px;
+  }
+  &-body {
+    &__input {
+      margin: 15px 0;
+      font-size: 18px;
+      display: flex;
+      flex-direction: column;
+      label {
+        display: block;
         font-size: 18px;
-        display: flex;
-        flex-direction: column;
-        label {
-          display: block;
-          font-size: 18px;
-        }
-        input {
-          margin: 0;
-          display: block;
-          border: 3px white solid;
-          border-radius: 6px;
-          background: none;
-          padding: 23px 17px;
-        }
       }
-      &__btn{
-        width: 100%;
-        padding: 16px 0;
-        background: #23263E;
-        font-size: 30px;
-        font-weight: normal;
-        color: white;
-        border: none;
-        margin-top: 26px;
-        cursor: pointer;
+      input {
+        margin: 0;
+        display: block;
+        border: 3px white solid;
+        border-radius: 6px;
+        background: none;
+        padding: 23px 17px;
       }
     }
-    &-or{
-      text-transform: uppercase;
-      font-size: 50px;
-      font-weight: bold;
+    &__btn{
+      width: 100%;
+      padding: 16px 0;
+      background: #23263E;
+      font-size: 30px;
+      font-weight: normal;
+      color: white;
+      border: none;
+      margin-top: 26px;
+      cursor: pointer;
     }
   }
+  &-or{
+    text-transform: uppercase;
+    font-size: 50px;
+    font-weight: bold;
+  }
+}
 </style>
