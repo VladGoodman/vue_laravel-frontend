@@ -4,20 +4,31 @@
       registration
     </div>
     <div class="form-body">
-      <form v-on:submit.prevent="login">
+      <form v-on:submit.prevent="register">
         <div class="form-body__input">
-          <label for="login-email">Email</label>
-          <input v-model="form.email" type="email" id="login-email" name="login-email">
+          <label for="register-name">Username</label>
+          <input v-model="form.username" type="text" id="register-name" >
         </div>
         <div class="form-body__input">
-          <label for="login-password">Password</label>
-          <input v-model="form.password" type="password" id="login-password" name="login-password">
+          <label for="register-email">Email</label>
+          <input v-model="form.email" type="email" id="register-email" >
+        </div>
+        <div class="form-body__input">
+          <label for="register-password">Password</label>
+          <input v-model="form.password" type="password" id="register-password" >
+        </div>
+        <div class="form-body__input">
+          <label for="register-repeat_password">Repeat Password</label>
+          <input v-model="form.repeat_password" type="password" id="register-repeat_password" >
         </div>
         <div class="form-body__danger">
-          {{ checkErrors }}
+          {{checkErrors}}
+        </div>
+        <div class="form-body__success">
+          {{ success }}
         </div>
         <button class="form-body__btn">
-          Login
+          Register
         </button>
       </form>
     </div>
@@ -31,7 +42,6 @@
 
 <script>
 export default {
-  name: 'LoginForm',
   data () {
     return {
       form: {
@@ -40,13 +50,17 @@ export default {
         password: '',
         repeat_password: '',
       },
-      errors: {}
+      errors: {},
+      success: null
     }
   },
   computed:{
     checkErrors(){
       if (typeof  this.errors === 'string'){
         return this.errors
+      }
+      if(this.errors.hasOwnProperty('name')){
+        return this.errors.name[0]
       }
       if(this.errors.hasOwnProperty('email')){
         return this.errors.email[0]
@@ -57,17 +71,32 @@ export default {
     }
   },
   methods: {
-    login () {
-      this.$store.dispatch('checkLoginInfo', {
-        email: this.form.email,
-        password: this.form.password
-      })
-        .then(response => {
-          this.$router.push('/')
+    checkRepeatPassword(){
+      return this.form.password === this.form.repeat_password;
+    },
+    register () {
+      if (this.checkRepeatPassword()){
+        this.$store.dispatch('checkRegisterInfo', {
+          name: this.form.username,
+          email: this.form.email,
+          password: this.form.password
         })
-        .catch(error => {
-          this.errors = error.error
-        })
+          .then(response => {
+            this.form = {
+              username: '',
+              email: '',
+              password: '',
+              repeat_password: '',
+            }
+            this.errors = {}
+            this.success = 'You have successfully registered'
+          })
+          .catch(error => {
+            this.errors = error.errors
+          })
+      }else{
+        this.errors = 'Password mismatch'
+      }
     }
   }
 }

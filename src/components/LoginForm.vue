@@ -14,7 +14,7 @@
           <input v-model="form.password" type="password" id="login-password" name="login-password">
         </div>
         <div class="form-body__danger">
-          {{ checkErrors }}
+          {{ errors }}
         </div>
         <button class="form-body__btn">
           Login
@@ -30,6 +30,9 @@
 </template>
 
 <script>
+import axios from 'axios'
+import repository from '../api/repository'
+
 export default {
   name: 'LoginForm',
   data () {
@@ -42,30 +45,22 @@ export default {
     }
   },
   computed:{
-    checkErrors(){
-      if (typeof  this.errors === 'string'){
-        return this.errors
-      }
-      if(this.errors.hasOwnProperty('email')){
-        return this.errors.email[0]
-      }
-      if(this.errors.hasOwnProperty('password')){
-        return this.errors.password[0]
-      }
-    }
+    // checkErrors(){
+    //   if (typeof  this.errors === 'string'){
+    //     return this.errors
+    //   }
+    //   if(this.errors.hasOwnProperty('email')){
+    //     return this.errors.email[0]
+    //   }
+    //   if(this.errors.hasOwnProperty('password')){
+    //     return this.errors.password[0]
+    //   }
+    // }
   },
   methods: {
-    login () {
-      this.$store.dispatch('checkLoginInfo', {
-        email: this.form.email,
-        password: this.form.password
-      })
-      .then(response => {
-        this.$router.push('/')
-      })
-      .catch(error => {
-        this.errors = error.error
-      })
+    async login () {
+      this.errors = null;
+      await this.$store.dispatch('login', this.form);
     }
   }
 }
