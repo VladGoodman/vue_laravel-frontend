@@ -1,10 +1,13 @@
 <template>
   <div class="input-form">
-    <form enctype="multipart/form-data" method="post" action="" v-on:submit.prevent="createAccountChange">
+    <form v-on:submit.prevent="createAccountChange">
+      <select v-model="name_type">
+        <option v-for="n in names_info" v-bind:value="n.type">{{n.name}}</option>
+      </select>
       <select v-model="change_type">
         <option v-for="t in changes_info" v-bind:value="t.type">{{t.name}}</option>
       </select>
-      <input type="number">
+      <input v-model="change_quantity" type="number">
       <button>+</button>
     </form>
   </div>
@@ -15,20 +18,30 @@ export default {
   name: 'InputAddChange',
   data() {
     return{
-      changes_info: [
-        {name: 'Затрата', type: 0},
-        {name: 'Пополнение', type: 1}
+      names_info: [
+        {name: 'Затрата', type: 1},
+        {name: 'Пополнение', type: 2}
       ],
-      change_type: 0,
-      change_quantity: 0
+      changes_info: [
+        {name: 'Затрата', type: 1},
+        {name: 'Пополнение', type: 2}
+      ],
+      name_type: 1,
+      change_type: 1,
+      change_quantity: 0,
     }
   },
   methods:{
-    createAccountChange(){
-      this.$store.dispatch('createUserChange', {
-        change_id: 1,
+    async createAccountChange(){
+      await this.$store.dispatch('createUserChange',{
+        change_id: this.change_type,
+        currency_id: 2,
+        name_id:6,
+        quantity: this.change_quantity
       })
-        .then(res => console.log(res))
+        .then(res => {
+          this.$emit('update')
+        })
         .catch(err => console.log(err))
     }
   }

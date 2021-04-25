@@ -87,7 +87,8 @@ export default createStore({
           })
       })
     },
-    createUserChange(params){
+    createUserChange({commit}, params){
+       console.log(params)
        repository.createAccountChange(params)
          .then((res) => {
            console.log(res)

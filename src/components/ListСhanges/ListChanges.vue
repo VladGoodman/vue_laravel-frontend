@@ -1,6 +1,6 @@
 <template>
   <div class="list-container">
-    <input-add-change></input-add-change>
+    <input-add-change v-on:update="getAccountData"></input-add-change>
     <list-changes-item v-for="l in list" :item="l">
     </list-changes-item>
   </div>
