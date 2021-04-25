@@ -1,14 +1,42 @@
 <template>
   <div class="list-container">
-    <list-changes-item></list-changes-item>
+    <input-add-change></input-add-change>
+    <list-changes-item v-for="l in list" :item="l">
+    </list-changes-item>
   </div>
 </template>
 
 <script>
 import ListChangesItem from './ListChangesItem'
+import InputAddChange from './InputAddChange'
 export default {
   components:{
-    ListChangesItem
+    ListChangesItem,
+    InputAddChange
+  },
+  methods:{
+    sortAccountData(mass){
+      return mass.sort((a,b) =>{
+        return Date.parse(b.date) - Date.parse(a.date)
+      })
+    },
+    getAccountData(){
+      this.$store.dispatch('getAccountChanges')
+        .then(res => {
+          console.log(res.data)
+          this.list = this.sortAccountData(res.data)
+        })
+        .catch(err => console.log(err))
+      console.log(this.list)
+    }
+  },
+  created(){
+    this.getAccountData()
+  },
+  data() {
+    return {
+        list: []
+    }
   }
 }
 </script>

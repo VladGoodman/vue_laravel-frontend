@@ -22,7 +22,7 @@
           <input v-model="form.repeat_password" type="password" id="register-repeat_password" >
         </div>
         <div class="form-body__danger">
-          {{checkErrors}}
+          {{errors}}
         </div>
         <div class="form-body__success">
           {{ success }}
@@ -56,18 +56,7 @@ export default {
   },
   computed:{
     checkErrors(){
-      if (typeof  this.errors === 'string'){
-        return this.errors
-      }
-      if(this.errors.hasOwnProperty('name')){
-        return this.errors.name[0]
-      }
-      if(this.errors.hasOwnProperty('email')){
-        return this.errors.email[0]
-      }
-      if(this.errors.hasOwnProperty('password')){
-        return this.errors.password[0]
-      }
+
     }
   },
   methods: {
@@ -76,24 +65,20 @@ export default {
     },
     register () {
       if (this.checkRepeatPassword()){
-        this.$store.dispatch('checkRegisterInfo', {
+        this.errors = null;
+        this.$store.dispatch('register', {
           name: this.form.username,
           email: this.form.email,
           password: this.form.password
         })
-          .then(response => {
-            this.form = {
-              username: '',
-              email: '',
-              password: '',
-              repeat_password: '',
-            }
-            this.errors = {}
-            this.success = 'You have successfully registered'
+          .then(res=>{
+            console.log(res)
+            this.$router.push({name: 'profileIndex'});
           })
-          .catch(error => {
-            this.errors = error.errors
-          })
+          .catch(err=> {
+            console.log(err.response.data.errors);
+            this.errors = err.response.data.errors
+          });
       }else{
         this.errors = 'Password mismatch'
       }

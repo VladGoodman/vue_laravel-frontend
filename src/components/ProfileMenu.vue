@@ -13,10 +13,9 @@
 
       </div>
       <div class="menu-info__username">
-        Example
+        {{ user.name }}
       </div>
       <div class="menu-info__score">
-        109,931
       </div>
     </div>
     <div class="menu-items">
@@ -48,7 +47,19 @@
 
 <script>
 export default {
-  name: 'ProfileMenu'
+  name: 'ProfileMenu',
+  data(){
+    return{
+      user: {}
+    }
+  },
+  created () {
+    this.$store.dispatch('getUserInfo')
+      .then(res => {
+        this.user = res.data
+        console.log(this.user)
+      })
+  }
 }
 </script>
 

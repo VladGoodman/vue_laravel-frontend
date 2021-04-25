@@ -20,6 +20,7 @@
           Login
         </button>
       </form>
+
     </div>
     <div class="form-social">
       <div class="form-social__item">
@@ -32,6 +33,7 @@
 <script>
 import axios from 'axios'
 import repository from '../api/repository'
+import store from '../store/store'
 
 export default {
   name: 'LoginForm',
@@ -41,27 +43,28 @@ export default {
         email: '',
         password: ''
       },
-      errors: {}
+      errors: { }
     }
   },
   computed:{
-    // checkErrors(){
-    //   if (typeof  this.errors === 'string'){
-    //     return this.errors
-    //   }
-    //   if(this.errors.hasOwnProperty('email')){
-    //     return this.errors.email[0]
-    //   }
-    //   if(this.errors.hasOwnProperty('password')){
-    //     return this.errors.password[0]
-    //   }
-    // }
+    checkErrors(){
+
+    }
   },
   methods: {
-    async login () {
+    login () {
       this.errors = null;
-      await this.$store.dispatch('login', this.form);
-    }
+        this.$store.dispatch('login', this.form)
+          .then(res=>{
+            console.log(res);
+            this.$router.push({name: 'profileIndex'});
+          })
+          .catch(err=> {
+            console.log(err);
+            this.errors = err.response.data.errors
+          });
+    },
+
   }
 }
 </script>

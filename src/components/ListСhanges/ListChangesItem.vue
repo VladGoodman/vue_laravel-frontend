@@ -1,19 +1,17 @@
 <template>
   <div class="item-container">
-    <div class="item-icon">
-
-    </div>
     <div class="item-name">
-      Name
+      {{ item.type_changes }} <span>{{ item.change_id  }}</span>
     </div>
     <div class="item-score">
-      1200 ₽
+      <span>{{ item.date }}</span> {{ item.quantity }} <span>{{ item.currency_type }}</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['item']
 }
 </script>
 

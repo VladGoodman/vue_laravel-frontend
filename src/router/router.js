@@ -6,6 +6,7 @@ import Auth from '../views/Auth.vue'
 import Logout from '../components/Logout.vue'
 import Profile from '../views/Profile.vue'
 import ListChanges from '../components/ListСhanges/ListChanges'
+import helper from './helper/helper'
 
 
 const routes = [
@@ -17,20 +18,24 @@ const routes = [
   {
     path: '/auth',
     name: 'Auth',
-    component: Auth
+    component: Auth,
+    beforeEnter: helper.guest
   },
   {
     path: '/logout',
     name: 'Logout',
-    component: Logout
+    component: Logout,
+    beforeEnter: helper.user
   },
   {
     path: '/profile',
-    name: 'Profile',
+    name: 'profile',
     component: Profile,
+    beforeEnter: helper.user,
     children: [
       {
         path: '/profile',
+        name: 'profileIndex',
         component: ListChanges
       }
       // {
