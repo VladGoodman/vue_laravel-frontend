@@ -3,11 +3,15 @@ import repository from '../api/repository'
 
 export default createStore({
   state: {
-    user: localStorage.getItem('user') || null
+    user: localStorage.getItem('user') || null,
+    username: localStorage.getItem('username'),
+    user_names: JSON.parse (localStorage.getItem('user_names'))
   },
   getters: {
     user: state => state.user,
     authenticated: state => state.user !== null,
+    names: state => state.user_names,
+    username: state => state.username,
   },
   mutations: {
     SET_USER (state, user) {
@@ -19,10 +23,17 @@ export default createStore({
       state.user = null
       localStorage.removeItem('user')
       console.log(state.user)
+    },
+    SET_USER_INFO(state, info){
+      state.username = info.user[0]
+      state.user_names = info.user[1]
+      localStorage.setItem('username', info.user[0])
+      localStorage.setItem('user_names', JSON.stringify(info.user[1]))
+      console.log(localStorage.getItem('user_names'))
     }
   },
   actions: {
-     login ({ commit }, user) {
+    login ({ commit }, user) {
        repository.createSession()
         .then(res => {
           repository.login(user)
@@ -37,6 +48,18 @@ export default createStore({
               console.log('Login is false')
             })
         })
+    },
+    getAccountInfo({ commit }){
+      return new Promise((resolve, reject) => {
+        repository.getAccountInfo()
+          .then((res) => {
+            commit('SET_USER_INFO', res.data)
+            resolve(res)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      })
     },
     logout ({ commit }) {
       return new Promise((resolve) => {
@@ -96,6 +119,12 @@ export default createStore({
          .catch((err) => {
            console.log(err)
          })
+    },
+    deleteChangeAccount({ commit }, id){
+      console.log(id)
+      repository.deleteChangeAccount({id:id})
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err));
     }
   }
 })

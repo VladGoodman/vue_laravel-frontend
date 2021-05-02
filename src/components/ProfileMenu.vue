@@ -13,7 +13,7 @@
 
       </div>
       <div class="menu-info__username">
-        {{ user.name }}
+        {{ username }}
       </div>
       <div class="menu-info__score">
       </div>
@@ -21,7 +21,11 @@
     <div class="menu-items">
       <ul>
         <li class="menu-items__item">
-          Time statistics
+          <router-link to="/profile">List</router-link>
+          <span class="item-icon">*</span>
+        </li>
+        <li class="menu-items__item">
+          <router-link to="/profile/time">Time statistics</router-link>
           <span class="item-icon">*</span>
         </li>
         <li class="menu-items__item">
@@ -33,11 +37,11 @@
           <span class="item-icon">*</span>
         </li>
         <li class="menu-items__item">
-          <router-link to="/profile/test2">Banks</router-link>
+          Banks
           <span class="item-icon">*</span>
         </li>
         <li class="menu-items__item">
-          <router-link to="/profile" Item Menu>Index</router-link>
+          Index
           <span class="item-icon">*</span>
         </li>
       </ul>
@@ -48,6 +52,7 @@
 <script>
 export default {
   name: 'ProfileMenu',
+  props: ['username'],
   data(){
     return{
       user: {}

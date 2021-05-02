@@ -1,7 +1,7 @@
 <template>
   <div class="list-container">
     <input-add-change v-on:update="getAccountData"></input-add-change>
-    <list-changes-item v-for="l in list" :item="l">
+    <list-changes-item v-on:update="getAccountData" v-for="l in list" :item="l">
     </list-changes-item>
   </div>
 </template>
@@ -14,12 +14,14 @@ export default {
     ListChangesItem,
     InputAddChange
   },
+
   methods:{
     sortAccountData(mass){
       return mass.sort((a,b) =>{
         return Date.parse(b.date) - Date.parse(a.date)
       })
     },
+
     getAccountData(){
       this.$store.dispatch('getAccountChanges')
         .then(res => {
@@ -35,7 +37,7 @@ export default {
   },
   data() {
     return {
-        list: []
+        list: [],
     }
   }
 }

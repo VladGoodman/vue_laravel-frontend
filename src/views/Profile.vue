@@ -1,11 +1,10 @@
 <template>
   <div class="container">
-      <profile-menu></profile-menu>
+      <profile-menu :username="username"></profile-menu>
     <div class="content">
       <router-view></router-view>
     </div>
     <button @click="logout">Logout </button>
-    <button @click="createAccountChange">Get</button>
   </div>
 </template>
 
@@ -15,10 +14,13 @@ export default {
   components:{
     ProfileMenu
   },
-  computed:{
-    checkUser(){
-      return this.$store.getters['user'];
+  data(){
+    return{
+      username: '',
     }
+  },
+  created () {
+    this.getAccountInfo()
   },
   methods:{
     async logout(){
@@ -29,12 +31,11 @@ export default {
         this.error = error;
       }
     },
-    createAccountChange(){
-      this.$store.dispatch('getUserInfo', {
-        change_id: 1,
-      })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+    getAccountInfo(){
+      this.$store.dispatch('getAccountInfo')
+        .then(res => {
+          this.username = this.$store.getters.username;
+        })
     }
   }
 }

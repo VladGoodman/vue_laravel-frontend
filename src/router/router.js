@@ -7,6 +7,7 @@ import Logout from '../components/Logout.vue'
 import Profile from '../views/Profile.vue'
 import ListChanges from '../components/ListСhanges/ListChanges'
 import helper from './helper/helper'
+import TimeStatistics from '../components/TimeStatistics/TimeStatistics'
 
 
 const routes = [
@@ -37,11 +38,13 @@ const routes = [
         path: '/profile',
         name: 'profileIndex',
         component: ListChanges
+      },
+      {
+        path: '/profile/time',
+        name: 'profileTime',
+        component: TimeStatistics
       }
-      // {
-      //   path: '/profile/test2',
-      //   component: ExampleTwo
-      // }
+
     ]
   }
 ]
